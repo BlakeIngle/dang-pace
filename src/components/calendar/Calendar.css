@@ -1,13 +1,6 @@
 .calendar-root {
-  --mainColor: 0;
-  --white: #dddde8;
-  --lightest: hsl(var(--mainColor), 100%, 65%);
-  --light: #29648a;
-  --dark: #464866;
-  --darkest: hsl(var(--mainColor), 50%, 20%);
-  --black: #101010;
-
   width: fit-content;
+  color: black;
   margin: auto;
 }
 
@@ -19,6 +12,7 @@
   flex-wrap: nowrap;
   margin: auto;
   margin: 0.25rem auto;
+  color: white;
 }
 .navigation button:not(.dark) {
   cursor: pointer;
@@ -89,9 +83,13 @@
   color: white;
 }
 
-.day-root.other-month,
+.day-root.other-month {
+  color: rgb(32, 32, 32);
+  background-color: rgb(228, 228, 228);
+}
 .day-root.past {
-  color: var(--darkest);
+  background-color: rgb(190, 190, 190);
+  color: rgb(163, 163, 163);
 }
 
 .calendar-root .month-pick {

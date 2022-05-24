@@ -7,7 +7,7 @@ var Context = createContext(null);
 
 export default function Calendar() {
     var [date, setDate] = useState(new Date());
-    var [today, setToday] = useState(new Date());
+    const today = new Date();
     var [visibleMonth, setVisibleMonth] = useState([]); // empty []
 
     function generateMonth() {
@@ -135,7 +135,7 @@ export default function Calendar() {
 
 }
 
-function Day({ date, name }) {
+function Day({ date }) {
     var { selectedDate, setSelectedDate, today } = React.useContext(Context);
 
     function onDayClicked() {

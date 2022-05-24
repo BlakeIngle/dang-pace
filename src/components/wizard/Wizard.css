@@ -1,0 +1,24 @@
+.wizard-root {
+}
+
+.wizard-root .steps-container {
+  width: 100%;
+  height: 25rem;
+
+  overflow: hidden;
+
+  position: relative;
+}
+
+.wizard-root .steps-container > * {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 0;
+  left: calc(100% * var(--order)); /* order is assigned inline */
+
+  transition: left 0.3s;
+}

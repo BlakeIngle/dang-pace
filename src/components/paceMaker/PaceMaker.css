@@ -1,0 +1,22 @@
+.pace-maker-root {
+  background-color: var(--dang-red);
+  color: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 25rem;
+  max-width: 100%;
+  margin: 2rem auto;
+
+  text-align: center;
+
+  outline: solid white 1rem;
+}
+
+.pace-maker-root .targets button {
+  width: 2em;
+}
+
+.pace-maker-root button {
+  color: var(--dang-red);
+  background-color: white;
+}

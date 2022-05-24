@@ -4,6 +4,7 @@
 
 body {
   margin: 0;
+  background-color: black;
   font-size: 18pt;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -17,9 +18,13 @@ code {
     monospace;
 }
 
+input,
+button {
+  font: inherit;
+}
+
 button {
   border: none;
-  font: inherit;
   padding: 0.5em;
 
   background-color: var(--dang-red);
@@ -30,6 +35,6 @@ button {
 }
 
 button:disabled {
-  filter: saturate(0.7);
+  filter: brightness(0.8);
   cursor: not-allowed;
 }
