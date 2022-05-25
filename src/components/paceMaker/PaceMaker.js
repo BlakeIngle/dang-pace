@@ -12,13 +12,8 @@ export default function PaceMaker() {
         date: new Date(),
         targets: 100
     });
+    const maxSteps = 3;
     const [stepNumber, setStepNumber] = useState(0)
-
-    // walk through making a pace target
-    // pick a name
-    // pick a date
-    // set number of targets
-    // done!
 
     function setName(newName) {
         setPace({
@@ -44,37 +39,58 @@ export default function PaceMaker() {
         });
     }
 
-    function nextStep() {
-        setStepNumber(stepNumber + 1);
+    const canGoForward = stepNumber < maxSteps - 1;
+    const canGoBack = stepNumber > 0;
+
+    function stepForward() {
+        if (canGoForward) {
+            setStepNumber(stepNumber + 1);
+        }
+    }
+
+    function stepBack() {
+        if (canGoBack) {
+            setStepNumber(stepNumber - 1);
+        }
+    }
+
+    function createPace() {
+        if (pace.name && pace.targets > 0) {
+            // create pace
+            console.log("making pace")
+            // take the data 
+            //      set up some default obj to start
+            //      nav to stats page
+        } else {
+            // something is not right
+        }
     }
 
     const nameForm = (
         <PaceNameForm
             name={pace.name}
             setName={setName}
-            onSubmit={nextStep} />
-    )
+            onSubmit={stepForward} />
+    );
 
     const dateForm = (
-        <PaceDateSelect
-            date={pace.date}
-            setDate={setDate}
-            onSubmit={nextStep} />
+        <Calendar onDaySelected={date => setDate(date)} />
     );
 
     const targetsForm = (
         <PaceTargetsForm
             targets={pace.targets}
             setTargets={setTargets}
-            onSubmit={nextStep} />
+            onSubmit={stepForward} />
     );
 
     return (
         <div className="pace-maker-root">
-            <h2>{pace.name}</h2>
+            <h2>{pace.name || "Pace Picante"}</h2>
             <h3>Hit {pace.targets}
                 {pace.targets == 1 ? ' target ' : ' targets '}
-                by
+                before
+                <br />
                 {' ' + pace.date.toLocaleDateString(undefined, {
                     weekday: 'long',
                     year: 'numeric',
@@ -82,16 +98,28 @@ export default function PaceMaker() {
                     day: 'numeric'
                 })}
             </h3>
+            <hr />
             <Wizard step={stepNumber}
-                next={nextStep}
+                next={stepForward}
             >
                 {nameForm}
                 {dateForm}
                 {targetsForm}
             </Wizard>
+            <div className="step-buttons">
+                <button onClick={stepBack}
+                    disabled={!canGoBack}>
+                    Back
+                </button>
+                <button onClick={stepForward}
+                    disabled={!canGoForward}>
+                    Next
+                </button>
+            </div>
 
-            <button onClick={() => setStepNumber(stepNumber + 1)}>
-                Next
+            <button onClick={createPace}
+                disabled={canGoForward}>
+                Create
             </button>
         </div>
     )
@@ -109,8 +137,8 @@ function PaceNameForm({ name, setName, onSubmit }) {
     }
 
     return (
-        <form onSubmit={handleFormSubmit}>
-            <h3>Give your Pace a name:</h3>
+        <form className="pace-name-form" onSubmit={handleFormSubmit}>
+            <h3>Pick(ante) a name:</h3>
             <input
                 type="text"
                 value={name}
@@ -118,24 +146,6 @@ function PaceNameForm({ name, setName, onSubmit }) {
                 ref={inputRef}
             />
         </form>
-    )
-}
-
-function PaceDateSelect({ onSubmit, date, setDate }) {
-    return (
-
-        <div>
-            <Calendar />
-            <div>date selected:
-                <span>
-                    {date.toLocaleDateString(undefined, date.toLocaleDateString(undefined, {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    }))}
-                </span>
-            </div>
-        </div>
     )
 }
 
@@ -149,8 +159,9 @@ function PaceTargetsForm({ onSubmit, targets, setTargets }) {
     }
 
     return (
-        <form className="targets"
+        <form className="pace-targets-form"
             onSubmit={handleFormSubmit}>
+            <h3>How Many Targets?</h3>
             <button type="button"
                 onClick={() => { setTargets(targets - 1) }}
                 disabled={targets < 1}>

@@ -1,11 +1,12 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import './Calendar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 var Context = createContext(null);
 
-export default function Calendar() {
+export default function Calendar({ onDaySelected }) {
+
     var [date, setDate] = useState(new Date());
     const today = new Date();
     var [visibleMonth, setVisibleMonth] = useState([]); // empty []
@@ -76,6 +77,9 @@ export default function Calendar() {
 
     useEffect(() => {
         generateMonth();
+        if (onDaySelected) {
+            onDaySelected(date);
+        }
     }, [date]);
 
     const isNavBackDisabled =
@@ -100,10 +104,14 @@ export default function Calendar() {
                         <FontAwesomeIcon icon={faChevronLeft} />
                     </button>
                     <div>
-                        {date.toLocaleDateString("en-GB", {
-                            year: "numeric",
-                            month: "long"
-                        })}
+
+                        <span style={{ fontSize: '1.2em' }}>
+                            {date.toLocaleDateString(undefined, { month: "long" })}
+                        </span>
+                        <br />
+                        <span style={{ fontSize: '0.8em' }}>
+                            {date.getFullYear()}
+                        </span>
                     </div>
                     <button
                         onClick={() => {
@@ -136,7 +144,7 @@ export default function Calendar() {
 }
 
 function Day({ date }) {
-    var { selectedDate, setSelectedDate, today } = React.useContext(Context);
+    var { selectedDate, setSelectedDate, today } = useContext(Context);
 
     function onDayClicked() {
         if (!active && !isInPast) {

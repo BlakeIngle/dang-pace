@@ -12,11 +12,68 @@
   outline: solid white 1rem;
 }
 
-.pace-maker-root .targets button {
-  width: 2em;
+.pace-maker-root > h3,
+.pace-maker-root hr {
+  margin: 1rem;
 }
 
 .pace-maker-root button {
   color: var(--dang-red);
   background-color: white;
+}
+
+.pace-maker-root .step-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  margin-bottom: 2rem;
+}
+
+.pace-maker-root .pace-name-form {
+  font-size: 1.25em;
+}
+
+.pace-maker-root .pace-name-form input {
+  text-align: center;
+  border: none;
+  outline: none;
+  padding: 8px 0;
+
+  font-weight: bold;
+  color: white;
+  background-color: transparent;
+  border-bottom: solid black 3px;
+}
+
+.pace-maker-root .pace-name-form input::selection {
+  background-color: white;
+  color: var(--dang-red);
+}
+
+.pace-maker-root .pace-targets-form h3 {
+  font-size: 1.5em;
+}
+
+.pace-maker-root .pace-targets-form button {
+  width: 2em;
+  transform: translateY(-0.75rem);
+}
+
+.pace-maker-root .pace-targets-form input {
+  width: 10rem;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: inherit;
+  font-weight: bold;
+  font-size: 4rem;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.pace-maker-root .pace-targets-form input::-webkit-inner-spin-button,
+.pace-maker-root .pace-targets-form input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  display: none;
+  margin: 0;
 }
