@@ -7,8 +7,11 @@ var Context = createContext(null);
 
 export default function Calendar({ onDaySelected }) {
 
-    var [date, setDate] = useState(new Date());
-    const today = new Date();
+    const today = new Date(),
+        tomorrow = new Date();
+
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    var [date, setDate] = useState(new Date(tomorrow));
     var [visibleMonth, setVisibleMonth] = useState([]); // empty []
 
     function generateMonth() {

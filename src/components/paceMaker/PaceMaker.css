@@ -42,6 +42,9 @@
   font-weight: bold;
   color: white;
   background-color: transparent;
+}
+.pace-maker-root .pace-name-form input,
+.pace-maker-root .pace-targets-form input[type="number"] {
   border-bottom: solid black 3px;
 }
 

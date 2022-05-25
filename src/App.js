@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import { Link } from 'react-router-dom';
+import { useLocalStorage } from './services/localStorage.service'
+import PaceDisplay from './components/paceDisplay/PaceDisplay';
 
 function App() {
 
@@ -8,13 +10,19 @@ function App() {
   //  if pace -> display pace
   //  else -> + create goal
 
+  const localStorageService = useLocalStorage()
+  var pace = localStorageService.getPace();
+  console.log(pace);
+
   return (
     <div className="App">
-      <h1>Pace Picante*</h1>
 
-      <Link to="/new">
-        <button>+ Get Started</button>
-      </Link>
+      {!pace && (
+        <Link to="/new">
+          <button>+ Get Started</button>
+        </Link>
+      )}
+      {pace && <PaceDisplay pace={pace} />}
     </div>
   );
 }

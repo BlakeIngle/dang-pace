@@ -1,15 +1,24 @@
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef, useState } from 'react'
+import { useNavigate } from 'react-router';
+import { Pace } from '../../models/Pace.class';
+import { useLocalStorage } from '../../services/localStorage.service';
 import Calendar from '../calendar/Calendar';
 import Wizard from '../wizard/Wizard';
 import './PaceMaker.css'
 
 export default function PaceMaker() {
 
+    const navigate = useNavigate();
+    const localStorageService = useLocalStorage();
+
+    let tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
     const [pace, setPace] = useState({
         name: 'Pace Picante',
-        date: new Date(),
+        date: tomorrow,
         targets: 100
     });
     const maxSteps = 3;
@@ -58,9 +67,10 @@ export default function PaceMaker() {
         if (pace.name && pace.targets > 0) {
             // create pace
             console.log("making pace")
-            // take the data 
-            //      set up some default obj to start
-            //      nav to stats page
+
+            localStorageService.addPace(new Pace(pace))
+            // TODO: animate
+            navigate('/');
         } else {
             // something is not right
         }
