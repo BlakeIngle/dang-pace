@@ -19,7 +19,7 @@ export default function TwitchCallback() {
     function getHash() {
         var data = window.location.search.substring(1); // cut off the ?
         data = data.split('&').map(pair => pair.split('='))
-        console.log(data)
+
         var pair = data.find(([key, value]) => key == 'code')
         if (pair) {
             let code = pair[1];
@@ -33,14 +33,12 @@ export default function TwitchCallback() {
 
         // get secret from firestore and send to twitch
         const twitchCol = collection(db, 'appData');
-        console.log(twitchCol)
         const twitchSnapshot = await getDocs(twitchCol);
-        console.log(twitchSnapshot)
         // const secret = twitchSnapshot?.docs[0]?.data()?.twitchClientSecret
 
         getTwitchToken(code, twitchSnapshot?.docs[0]?.data()?.twitchClientSecret)
             .then((response) => {
-                console.log(response.data)
+
                 setAuth({
                     access_token: response.data.access_token,
                     refresh_token: response.data.refresh_token

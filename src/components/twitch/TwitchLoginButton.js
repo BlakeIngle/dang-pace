@@ -1,4 +1,5 @@
 import React from 'react'
+import './TwitchLogin.css'
 import { collection, getDocs } from 'firebase/firestore/lite';
 
 import { db } from '../../firebase/init-firebase'
@@ -16,7 +17,7 @@ export default function TwitchLoginButton() {
 
     return (
         <a href={twitchAuthUrl}>
-            <button>
+            <button className='twitch'>
                 Login With Twitch
             </button>
         </a>

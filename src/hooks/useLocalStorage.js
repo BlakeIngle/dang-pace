@@ -23,12 +23,18 @@ function useLocalStorage(key, initialValue) {
 
     function setValue(newValue) {
         try {
-            localStorage.setItem(key, JSON.stringify(newValue))
+            if (newValue == undefined || newValue == null) {
+                localStorage.removeItem(key);
+            } else {
+                localStorage.setItem(key, JSON.stringify(newValue))
+            }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
-        setStoredValue(newValue)
+
+        setStoredValue(newValue);
     }
+
 
     return [storedValue, setValue]
 }
