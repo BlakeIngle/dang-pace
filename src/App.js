@@ -1,24 +1,30 @@
 import './App.css';
-import { Link } from 'react-router-dom';
-import { useLocalStorage } from './services/localStorage.service'
+import { Link, Outlet } from 'react-router-dom';
 import PaceDashboard from './components/PaceDashboard/PaceDashboard';
 import TwitchLoginButton from './components/twitch/TwitchLoginButton';
+import { createContext } from 'react';
+import { useLocalStorage } from './hooks/useLocalStorage';
+
+export const AuthContext = createContext(null);
 
 function App() {
 
+  const [auth, setAuth] = useLocalStorage('auth')
+
   return (
-    <div className="App">
+    <AuthContext.Provider value={{
+      token: auth?.access_token,
+      refreshToken: auth?.refresh_token,
+      setAuth
+    }}>
 
-      <TwitchLoginButton />
+      <div className="App">
 
-      {/* {!pace && (
-        <Link to="/new">
-          <button>+ Get Started</button>
-        </Link>
-      )}
+        <TwitchLoginButton />
 
-      {pace && <PaceDashboard pace={pace} />} */}
-    </div >
+        <Outlet />
+      </div >
+    </AuthContext.Provider>
   );
 }
 

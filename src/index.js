@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PaceMaker from './components/paceMaker/PaceMaker';
+import TwitchCallback from './components/twitch/TwitchCallback';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,6 +14,7 @@ root.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="/new" element={<PaceMaker />} />
+          <Route path="/twitchAuth" element={<TwitchCallback />} />
         </Route>
       </Routes>
     </BrowserRouter>

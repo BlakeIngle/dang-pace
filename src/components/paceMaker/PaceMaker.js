@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router';
 import { Pace } from '../../models/Pace.class';
-import { useLocalStorage } from '../../services/localStorage.service';
 import Calendar from '../calendar/Calendar';
 import Wizard from '../wizard/Wizard';
 import './PaceMaker.css'
@@ -11,7 +10,6 @@ import './PaceMaker.css'
 export default function PaceMaker() {
 
     const navigate = useNavigate();
-    const localStorageService = useLocalStorage();
 
     let tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -70,7 +68,6 @@ export default function PaceMaker() {
 
             let newPace = new Pace(pace);
             console.log('pace created', newPace)
-            localStorageService.addPace(newPace);
             console.log("pace saved");
             // TODO: animate
             navigate('/');

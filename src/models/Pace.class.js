@@ -9,34 +9,51 @@ export class Pace {
 
     dailyGoal;  // number
 
+    currentDay; // date -> updates when opening app
+    todaysGoal; // number
+    targetsDoneToday; // number
+
+    dailyRequired;
+
     constructor(obj) {
         obj.date = new Date(obj.date);
         obj.date.setHours(0, 0, 0, 0)
 
         Object.assign(this, obj);
 
+        if (obj.date) {
+            this.targetDate = new Date(obj.date);
+        }
+
         if (!this.targetsDone) {
             this.targetsDone = 0;
         }
-        if (!this.history) {
-            this.history = [];
+        if (obj.history) {
+            // deep copy of history objects
+            this.history = [...obj.history.map(h => {
+                return { ...h }
+            })];
         }
         if (!this.dailyGoal) {
             this.dailyGoal = Math.ceil(this.calculateDailyRequirement());
-            console.log("daily required: ", this.dailyGoal);
+        }
+        if (obj.currentDay) {
+            this.currentDay = new Date(this.currentDay);
         }
     }
 
     calculateDailyRequirement() {
+
         // get days remaining
         let daysRemaining = this.calculateDaysRemaining();
 
         let requiredPace = (this.targets - this.targetsDone) / daysRemaining;
-        console.log(requiredPace)
-        return requiredPace
+        console.log(requiredPace);
+        return requiredPace;
     }
 
     calculateDaysRemaining() {
+
         // target date - today
         let date = new Date(this.targetDate);
         date.setHours(0, 0, 0, 0);
@@ -52,6 +69,7 @@ export class Pace {
         // loop while day ! same day as target day
         do {
             let dayNum = pointer.getDay();
+
             // if saturday or sunday
             if (dayNum == 6 || dayNum == 0) {
                 // nothing
@@ -69,17 +87,49 @@ export class Pace {
 
         let weekdaysBetween = (daysBetween * (5 / 7)) + count;
 
+        return Number(weekdaysBetween);
+    }
 
-        // console.log(daysBetween, " days between")
-        // console.log(weekdaysBetween, " streaming days between")
+    initToday() {
+        if (this.currentDay) {
+            // log history
+            this.history.push({
+                date: new Date(this.currentDay),
+                goal: this.todaysGoal,
+                targetsDone: this.targetsDoneToday
+            });
+        }
 
-        return +weekdaysBetween;
+        // first day
+        this.currentDay = new Date();
+        this.currentDay.setHours(0, 0, 0, 0);
 
+        this.todaysGoal = this.dailyGoal;
+        this.targetsDoneToday = 0;
+
+        // and update daily requirement
+        this.dailyRequired = this.calculateDailyRequirement();
+    }
+
+    isUpToDate() {
+        if (!this.currentDay) {
+            return false;
+        }
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        this.currentDay.setHours(0, 0, 0, 0);
+        if (this.currentDay.getTime() == today.getTime()) {
+            return true;
+        }
+
+        return false;
     }
 }
 
-class History {
-    date;       // date
-    targets;    // number
-    targetsDone;// number
+class Target {
+    name; // string
+    detail; // string
+    hint; // string
+    type; // 'boss' 'enemy' 'achievement' 'event'
 }
