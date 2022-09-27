@@ -11,8 +11,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/new" element={<PaceMaker />} />
+        <Route path="/" element={<App />}>
+          <Route path="/new" element={<PaceMaker />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

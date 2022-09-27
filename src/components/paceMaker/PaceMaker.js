@@ -68,7 +68,10 @@ export default function PaceMaker() {
             // create pace
             console.log("making pace")
 
-            localStorageService.addPace(new Pace(pace))
+            let newPace = new Pace(pace);
+            console.log('pace created', newPace)
+            localStorageService.addPace(newPace);
+            console.log("pace saved");
             // TODO: animate
             navigate('/');
         } else {
