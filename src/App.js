@@ -1,28 +1,32 @@
 import './App.css';
-import { Link, Outlet } from 'react-router-dom';
-import PaceDashboard from './components/PaceDashboard/PaceDashboard';
-import TwitchLoginButton from './components/twitch/TwitchLoginButton';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { createContext, useEffect, useState } from 'react';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { getUserData } from './services/http.service';
+import TwitchLoginButton from './components/twitch/TwitchLoginButton';
 import Profile from './components/profile/Profile';
 
 export const AuthContext = createContext(null);
 
 function App() {
 
-  const [auth, setAuth] = useLocalStorage('auth')
+  // auth info for twitch
+  const [auth, setAuth] = useLocalStorage('auth') // { access_token: string, refresh_token: string }
+  // twitch user info
   const [activeUser, setActiveUser] = useState()
+
+  const { pathname } = useLocation();
 
   useEffect(() => {
     // check if auth token exists on init
     if (auth?.access_token) {
-      // use token to get user data
+      // use token to get user data from twitch
       getUserData(auth.access_token)
         .then(response => {
-          // console.log(response.data.data[0])
           if (response.data.data?.length > 0) {
-            setActiveUser(response.data.data[0]);
+            const twitchUser = response.data.data[0]
+            setActiveUser(twitchUser);
+            console.log(twitchUser)
           }
         })
         .catch(err => {
@@ -33,17 +37,18 @@ function App() {
 
   return (
     <AuthContext.Provider value={{
+      auth,
+      setAuth,
       activeUser,
+      setActiveUser,
       token: auth?.access_token,
       refreshToken: auth?.refresh_token,
       setAuth
     }}>
 
       <div className="App">
-        {activeUser
-          ? <Profile {...activeUser} />
-          : <TwitchLoginButton />
-        }
+        {(!auth && pathname != '/twitchAuth') && <TwitchLoginButton />}
+        {(auth && activeUser) && <Profile {...activeUser} />}
 
         <Outlet />
       </div >
