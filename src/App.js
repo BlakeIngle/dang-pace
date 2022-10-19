@@ -5,11 +5,13 @@ import { useLocalStorage } from './hooks/useLocalStorage';
 import { getUserData } from './services/http.service';
 import TwitchLoginButton from './components/twitch/TwitchLoginButton';
 import Profile from './components/profile/Profile';
+import { getAuth } from 'firebase/auth';
 
 export const AuthContext = createContext(null);
 
 function App() {
 
+  const firebaseAuth = getAuth();
   // auth info for twitch
   const [auth, setAuth] = useLocalStorage('auth') // { access_token: string, refresh_token: string }
   // twitch user info
@@ -48,7 +50,7 @@ function App() {
 
       <div className="App">
         {(!auth && pathname != '/twitchAuth') && <TwitchLoginButton />}
-        {(auth && activeUser) && <Profile {...activeUser} />}
+        {(auth && activeUser && firebaseAuth) && <Profile {...activeUser} />}
 
         <Outlet />
       </div >

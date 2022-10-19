@@ -1,20 +1,27 @@
 import React, { useContext, useEffect } from 'react'
 import { collection, getDocs } from 'firebase/firestore/lite';
 import { db } from '../../firebase/init-firebase'
-import { twitchConfig } from '../../twitch/config';
+import { createUserWithEmailAndPassword, getAuth, signInAnonymously, signInWithEmailAndPassword } from 'firebase/auth'
 import { getTwitchToken } from '../../services/http.service';
 import { AuthContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 
 export default function TwitchCallback() {
 
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth, activeUser } = useContext(AuthContext);
     const navigate = useNavigate()
 
+    const firebaseAuth = getAuth()
+
     useEffect(() => {
-        console.log("callback was init")
         getHash();
     }, [])
+
+    useEffect(() => {
+        if (activeUser) {
+            signInWithFirebase(activeUser)
+        }
+    }, [activeUser])
 
     function getHash() {
         var data = window.location.search.substring(1); // cut off the ?
@@ -26,6 +33,7 @@ export default function TwitchCallback() {
             getClientSecret(code);
         } else {
             console.log("no code, auth failed")
+            navigate('/')
         }
     }
 
@@ -43,10 +51,41 @@ export default function TwitchCallback() {
                     access_token: response.data.access_token,
                     refresh_token: response.data.refresh_token
                 });
-                navigate('/') // login successful, we got the token!
+                // look at useEffect for activeUser
             })
             .catch((err) => {
                 console.log(err)
+            });
+    }
+
+    function signInWithFirebase(twitchUser) {
+
+        signInWithEmailAndPassword(firebaseAuth, twitchUser.email, twitchUser.id)
+            .then((userCredential) => {
+                // Signed in 
+                // user can be accessed with 'getAuth'
+                navigate('/') // go home
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                if (errorCode === 'auth/user-not-found') {
+                    createNewFirebaseAccount(twitchUser)
+                }
+            });
+    }
+
+    function createNewFirebaseAccount(twitchUser) {
+
+        createUserWithEmailAndPassword(firebaseAuth, twitchUser.email, twitchUser.id)
+            .then((userCredential) => {
+                // Signed in 
+                // user can be accessed with 'getAuth'
+                navigate('/') // go home!
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
             });
     }
 
