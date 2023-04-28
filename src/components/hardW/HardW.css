@@ -1,0 +1,11 @@
+.hard-w-root {
+  width: fit-content;
+  background-color: white;
+  color: black;
+}
+
+.hard-w-root .hard {
+  color: yellow;
+  text-shadow: 0 0 5px black;
+  font-family: "Press Start 2P", cursive;
+}

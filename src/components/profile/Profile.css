@@ -45,4 +45,6 @@
 
 .profile-banner:hover .hidden-menu {
   top: calc(100% - 3px);
+
+  z-index: 1;
 }
